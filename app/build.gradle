@@ -20,6 +20,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    buildTypes.each {
+        it.buildConfigField 'String', 'OwmApiKey', OwmApiKey
+        it.buildConfigField 'String', 'OwmBaseUrl', OwmBaseUrl
+    }
 }
 
 def supportLibraryVersion = '27.1.1'
