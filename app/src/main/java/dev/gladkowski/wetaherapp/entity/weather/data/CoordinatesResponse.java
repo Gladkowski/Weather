@@ -5,16 +5,16 @@ import com.google.gson.annotations.SerializedName;
 public class CoordinatesResponse {
 
     @SerializedName("lon")
-    private Float lon;
+    private Double lon;
 
     @SerializedName("lat")
-    private Float lat;
+    private Double lat;
 
-    public Float getLon() {
+    public Double getLon() {
         return lon;
     }
 
-    public Float getLat() {
+    public Double getLat() {
         return lat;
     }
 }

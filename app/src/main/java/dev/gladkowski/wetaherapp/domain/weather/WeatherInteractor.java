@@ -10,9 +10,6 @@ public interface WeatherInteractor {
 
     /**
      * Get weather by coordinates
-     *
-     * @param lat latitude
-     * @param lon longitude
      */
-    Single<Weather> getWeatherByCoordinates(float lat, float lon);
+    Single<Weather> getLocalWeather();
 }

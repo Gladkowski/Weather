@@ -14,7 +14,7 @@ public interface WeatherApi {
      * @param lon longitude
      */
     @GET("/data/2.5/weather?")
-    Single<WeatherResponseByCoordinates> getWeatherBycoordinates(@Query("lat") float lat,
-                                                                 @Query("lon") float lon);
+    Single<WeatherResponseByCoordinates> getWeatherBycoordinates(@Query("lat") double lat,
+                                                                 @Query("lon") double lon);
 
 }

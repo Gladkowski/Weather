@@ -24,8 +24,8 @@ public class WeatherInteractorImpl implements WeatherInteractor {
     }
 
     @Override
-    public Single<Weather> getWeatherByCoordinates(float lat, float lon) {
-        return weatherRepository.getWeatherByCoordinates(lat, lon)
+    public Single<Weather> getLocalWeather() {
+        return weatherRepository.getLocalWeather()
                 .compose((SingleErrorHandler<Weather>) singleErrorHandler)
                 .compose(rxUtils.applySingleSchedulers());
     }

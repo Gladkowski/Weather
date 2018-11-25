@@ -1,13 +1,13 @@
 package dev.gladkowski.wetaherapp.presentation.weather;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
 
 import dev.gladkowski.wetaherapp.domain.weather.WeatherInteractor;
 import dev.gladkowski.wetaherapp.presentation.common.activity.BaseNetworkPresenter;
 import dev.gladkowski.wetaherapp.utils.rx.ErrorResourceProvider;
+import io.reactivex.disposables.Disposable;
 import ru.terrakok.cicerone.Router;
 
 /**
@@ -51,33 +51,31 @@ public class WeatherPresenter extends BaseNetworkPresenter<WeatherView> {
     @Override
     public void initData() {
         getViewState().checkPermissions();
+    }
+
+    void onPermissionsGranted() {
+        getViewState().hidePermissionNeededView();
+        getViewState().showWeatherViews();
         getWeather();
     }
 
-    private void getWeather() {
-//        getViewState().onShowLoading();
-//
-//        Disposable subscription = weatherInteractor.getWeatherByCoordinates(50f, 14.44f)
-//                .subscribe(movieItem -> {
-//                    getViewState().onHideLoading();
-//
-//                }, exception -> {
-//                    processErrors(exception);
-//                    getViewState().onHideLoading();
-//                });
-//
-//        unsubscribeOnDestroy(subscription);
-    }
-
-    public void onPermissionsGranted() {
-        Log.v("PERMISSION_TEST", "GRANTED");
-        getViewState().hidePermissionNeededView();
-        getViewState().showWeatherViews();
-    }
-
-    public void onPermissionDenied() {
-        Log.v("PERMISSION_TEST", "DENIED");
+    void onPermissionDenied() {
         getViewState().showPermissionNeededView();
         getViewState().hideWeatherViews();
+    }
+
+    private void getWeather() {
+        getViewState().onShowLoading();
+
+        Disposable subscription = weatherInteractor.getLocalWeather()
+                .subscribe(movieItem -> {
+                    getViewState().onHideLoading();
+
+                }, exception -> {
+                    processErrors(exception);
+                    getViewState().onHideLoading();
+                });
+
+        unsubscribeOnDestroy(subscription);
     }
 }

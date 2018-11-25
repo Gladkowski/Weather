@@ -6,13 +6,15 @@ import dev.gladkowski.wetaherapp.data.network.WeatherApi;
 import dev.gladkowski.wetaherapp.data.repository.weather.WeatherRepository;
 import dev.gladkowski.wetaherapp.data.repository.weather.WeatherRepositoryImpl;
 import dev.gladkowski.wetaherapp.data.repository.weather.converter.WeatherByCoordinatesResponseConverter;
+import dev.gladkowski.wetaherapp.utils.location.LocationProvider;
 
 @Module
 public interface WeatherRepositoryModule {
 
     @Provides
     static WeatherRepository provideWeatherRepository(WeatherApi weatherApi,
-                                                      WeatherByCoordinatesResponseConverter converter) {
-        return new WeatherRepositoryImpl(weatherApi, converter);
+                                                      WeatherByCoordinatesResponseConverter converter,
+                                                      LocationProvider locationProvider) {
+        return new WeatherRepositoryImpl(weatherApi, converter, locationProvider);
     }
 }
