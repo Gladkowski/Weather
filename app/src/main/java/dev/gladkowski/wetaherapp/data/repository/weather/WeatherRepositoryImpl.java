@@ -21,7 +21,7 @@ public class WeatherRepositoryImpl implements WeatherRepository {
 
 
     @Override
-    public Single<Weather> getWeatherBycoordinates(float lat, float lon) {
+    public Single<Weather> getWeatherByCoordinates(float lat, float lon) {
         return weatherApi.getWeatherBycoordinates(lat, lon)
                 .map(converter);
     }

@@ -1,12 +1,12 @@
-package dev.gladkowski.wetaherapp.data.repository.weather;
+package dev.gladkowski.wetaherapp.domain.weather;
 
 import dev.gladkowski.wetaherapp.entity.weather.domain.Weather;
 import io.reactivex.Single;
 
 /**
- * Repository for Weather
+ * Interactor for weather
  */
-public interface WeatherRepository {
+public interface WeatherInteractor {
 
     /**
      * Get weather by coordinates
