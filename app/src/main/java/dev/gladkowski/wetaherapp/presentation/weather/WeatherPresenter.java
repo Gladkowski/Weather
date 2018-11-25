@@ -1,6 +1,7 @@
 package dev.gladkowski.wetaherapp.presentation.weather;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
 
@@ -49,7 +50,7 @@ public class WeatherPresenter extends BaseNetworkPresenter<WeatherView> {
 
     @Override
     public void initData() {
-        getViewState().onCheckPermissions();
+        getViewState().checkPermissions();
         getWeather();
     }
 
@@ -66,5 +67,17 @@ public class WeatherPresenter extends BaseNetworkPresenter<WeatherView> {
 //                });
 //
 //        unsubscribeOnDestroy(subscription);
+    }
+
+    public void onPermissionsGranted() {
+        Log.v("PERMISSION_TEST", "GRANTED");
+        getViewState().hidePermissionNeededView();
+        getViewState().showWeatherViews();
+    }
+
+    public void onPermissionDenied() {
+        Log.v("PERMISSION_TEST", "DENIED");
+        getViewState().showPermissionNeededView();
+        getViewState().hideWeatherViews();
     }
 }

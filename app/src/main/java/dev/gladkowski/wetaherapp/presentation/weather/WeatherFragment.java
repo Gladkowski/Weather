@@ -8,13 +8,15 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 
+import butterknife.BindView;
 import dev.gladkowski.wetaherapp.R;
 import dev.gladkowski.wetaherapp.presentation.common.fragment.BaseFragment;
+import dev.gladkowski.wetaherapp.presentation.weather.customview.PermissionNeededView;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
@@ -27,10 +29,16 @@ import permissions.dispatcher.RuntimePermissions;
  * Fragment that shows weather
  */
 @RuntimePermissions
-public class WeatherFragment extends BaseFragment<WeatherPresenter, WeatherView> implements WeatherView {
+public class WeatherFragment extends BaseFragment<WeatherPresenter, WeatherView>
+        implements WeatherView, PermissionNeededView.OnRequestPermissionListener {
 
     @InjectPresenter
     WeatherPresenter weatherPresenter;
+
+    @BindView(R.id.text)
+    TextView textView;
+    @BindView(R.id.view_permission_needed)
+    PermissionNeededView permissionNeededView;
 
     public WeatherFragment() {
     }
@@ -57,6 +65,12 @@ public class WeatherFragment extends BaseFragment<WeatherPresenter, WeatherView>
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        initViews();
+    }
+
+    private void initViews() {
+        permissionNeededView.setCallbackListener(this);
     }
 
     @Override
@@ -78,10 +92,29 @@ public class WeatherFragment extends BaseFragment<WeatherPresenter, WeatherView>
     // MVP
     ///////////////////////////////////////////////////////////////////////////
 
+    @Override
+    public void checkPermissions() {
+        WeatherFragmentPermissionsDispatcher.loadDataWithPermissionCheck(this);
+    }
 
     @Override
-    public void onCheckPermissions() {
-        WeatherFragmentPermissionsDispatcher.loadDataWithPermissionCheck(this);
+    public void showPermissionNeededView() {
+        permissionNeededView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hidePermissionNeededView() {
+        permissionNeededView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showWeatherViews() {
+        textView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideWeatherViews() {
+        textView.setVisibility(View.GONE);
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -89,12 +122,19 @@ public class WeatherFragment extends BaseFragment<WeatherPresenter, WeatherView>
     ///////////////////////////////////////////////////////////////////////////
 
     /**
+     * Request permission by clicking a button in PermissionNeededView
+     */
+    @Override
+    public void onRequestPermission() {
+        checkPermissions();
+    }
+
+    /**
      * Permission denied
      */
     @OnPermissionDenied({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
     void showDeniedForLocationPermission() {
-        Toast.makeText(getContext(), "denied", Toast.LENGTH_SHORT).show();
-//        getPresenter().showDeniedForLocation();
+        getPresenter().onPermissionDenied();
     }
 
     /**
@@ -102,7 +142,7 @@ public class WeatherFragment extends BaseFragment<WeatherPresenter, WeatherView>
      */
     @OnNeverAskAgain({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
     void showNeverAskForLocationPermission() {
-        Toast.makeText(getContext(), "never", Toast.LENGTH_SHORT).show();
+        getPresenter().onPermissionsGranted();
     }
 
     /**
@@ -110,8 +150,7 @@ public class WeatherFragment extends BaseFragment<WeatherPresenter, WeatherView>
      */
     @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
     public void loadData() {
-        Toast.makeText(getContext(), "granted", Toast.LENGTH_SHORT).show();
-//        getPresenter().onPermissionsGranted();
+        getPresenter().onPermissionsGranted();
     }
 
     /**
