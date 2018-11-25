@@ -8,4 +8,9 @@
     <string name="error_unknown">Unknown error occurred</string>
     <string name="error_internal_server">Server is under maintenance, please try again later</string>
     <string name="error_generic">Oops, something went wrong! Try again later</string>
+
+    <!--Permission strings-->
+    <string name="permission_location_message">App would like to access your locations to show the correct weather.</string>
+    <string name="permission_ok">Ok</string>
+    <string name="permission_dont_allow">Don\'t Allow</string>
 </resources>
