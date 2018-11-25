@@ -5,9 +5,9 @@ import com.google.gson.annotations.SerializedName;
 public class WindResponse {
 
     @SerializedName("speed")
-    private Integer speed;
+    private Float speed;
 
-    public Integer getSpeed() {
+    public Float getSpeed() {
         return speed;
     }
 }

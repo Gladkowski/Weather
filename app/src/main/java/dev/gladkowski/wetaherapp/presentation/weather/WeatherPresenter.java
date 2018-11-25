@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.arellomobile.mvp.InjectViewState;
 
+import dev.gladkowski.wetaherapp.domain.weather.WeatherInteractor;
 import dev.gladkowski.wetaherapp.presentation.common.activity.BaseNetworkPresenter;
 import dev.gladkowski.wetaherapp.utils.rx.ErrorResourceProvider;
 import ru.terrakok.cicerone.Router;
@@ -18,11 +19,15 @@ public class WeatherPresenter extends BaseNetworkPresenter<WeatherView> {
     private Router router;
     @NonNull
     private ErrorResourceProvider errorResourceProvider;
+    @NonNull
+    private WeatherInteractor weatherInteractor;
 
     public WeatherPresenter(@NonNull Router router,
-                            @NonNull ErrorResourceProvider errorResourceProvider) {
+                            @NonNull ErrorResourceProvider errorResourceProvider,
+                            @NonNull WeatherInteractor weatherInteractor) {
         this.router = router;
         this.errorResourceProvider = errorResourceProvider;
+        this.weatherInteractor = weatherInteractor;
     }
 
     @NonNull
@@ -44,6 +49,21 @@ public class WeatherPresenter extends BaseNetworkPresenter<WeatherView> {
 
     @Override
     public void initData() {
+        getWeather();
+    }
 
+    private void getWeather() {
+//        getViewState().onShowLoading();
+//
+//        Disposable subscription = weatherInteractor.getWeatherByCoordinates(50f, 14.44f)
+//                .subscribe(movieItem -> {
+//                    getViewState().onHideLoading();
+//
+//                }, exception -> {
+//                    processErrors(exception);
+//                    getViewState().onHideLoading();
+//                });
+//
+//        unsubscribeOnDestroy(subscription);
     }
 }

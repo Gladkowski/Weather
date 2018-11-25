@@ -6,7 +6,7 @@ import dev.gladkowski.wetaherapp.data.repository.weather.converter.WeatherByCoor
 import dev.gladkowski.wetaherapp.data.repository.weather.converter.WeatherByCoordinatesResponseConverterImpl;
 
 @Module
-public class WeatherUtilsModule {
+public interface WeatherUtilsModule {
 
     @Provides
     static WeatherByCoordinatesResponseConverter provideWeatherByCoordinatesResponseConverter() {

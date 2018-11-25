@@ -5,17 +5,17 @@ package dev.gladkowski.wetaherapp.entity.weather.domain;
  */
 public class Weather {
 
-    private Integer temperature;
+    private Float temperature;
     private Integer pressure;
     private Integer humidity;
 
-    public Weather(Integer temperature, Integer pressure, Integer humidity) {
+    public Weather(Float temperature, Integer pressure, Integer humidity) {
         this.temperature = temperature;
         this.pressure = pressure;
         this.humidity = humidity;
     }
 
-    public Integer getTemperature() {
+    public Float getTemperature() {
         return temperature;
     }
 

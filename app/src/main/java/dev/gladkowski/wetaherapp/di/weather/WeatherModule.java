@@ -9,7 +9,7 @@ import dev.gladkowski.wetaherapp.presentation.weather.WeatherFragment;
 
 
 @Module(includes = {BaseFragmentModule.class, WeatherPresenterModule.class,
-        WeatherRepositoryModule.class, WeatherUtilsModule.class})
+        WeatherInteractorModule.class, WeatherRepositoryModule.class, WeatherUtilsModule.class})
 public interface WeatherModule {
 
     @Binds
