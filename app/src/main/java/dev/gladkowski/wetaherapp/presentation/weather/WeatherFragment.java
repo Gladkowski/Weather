@@ -4,6 +4,7 @@ import android.Manifest;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +36,9 @@ public class WeatherFragment extends BaseFragment<WeatherPresenter, WeatherView>
     @InjectPresenter
     WeatherPresenter weatherPresenter;
 
-    @BindView(R.id.text)
+    @BindView(R.id.refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.text_temperature)
     TextView textView;
     @BindView(R.id.view_permission_needed)
     PermissionNeededView permissionNeededView;
@@ -71,6 +74,9 @@ public class WeatherFragment extends BaseFragment<WeatherPresenter, WeatherView>
 
     private void initViews() {
         permissionNeededView.setCallbackListener(this);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+//                getPresenter().refresh();
+        });
     }
 
     @Override
@@ -110,11 +116,15 @@ public class WeatherFragment extends BaseFragment<WeatherPresenter, WeatherView>
     @Override
     public void showWeatherViews() {
         textView.setVisibility(View.VISIBLE);
+        swipeRefreshLayout.setEnabled(true);
+//        swipeRefreshLayout.setRefreshing(true);
     }
 
     @Override
     public void hideWeatherViews() {
         textView.setVisibility(View.GONE);
+        swipeRefreshLayout.setEnabled(false);
+//        swipeRefreshLayout.setRefreshing(false);
     }
 
     ///////////////////////////////////////////////////////////////////////////

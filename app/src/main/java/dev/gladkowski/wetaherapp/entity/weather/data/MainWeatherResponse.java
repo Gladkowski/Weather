@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 public class MainWeatherResponse {
 
     @SerializedName("temp")
-    private Float temp;
+    private Double temp;
 
     @SerializedName("pressure")
     private Integer pressure;
@@ -14,12 +14,12 @@ public class MainWeatherResponse {
     private Integer humidity;
 
     @SerializedName("temp_min")
-    private Float temp_min;
+    private Double tempMin;
 
     @SerializedName("temp_max")
-    private Float temp_max;
+    private Double tempMax;
 
-    public Float getTemp() {
+    public Double getTemp() {
         return temp;
     }
 
@@ -31,11 +31,11 @@ public class MainWeatherResponse {
         return humidity;
     }
 
-    public Float getTemp_min() {
-        return temp_min;
+    public Double getTempMin() {
+        return tempMin;
     }
 
-    public Float getTemp_max() {
-        return temp_max;
+    public Double getTempMax() {
+        return tempMax;
     }
 }

@@ -9,6 +9,7 @@ import dagger.Provides;
 import dev.gladkowski.wetaherapp.BuildConfig;
 import dev.gladkowski.wetaherapp.entity.app.data.AppConfig;
 import dev.gladkowski.wetaherapp.utils.network.ApiKeyInterceptor;
+import dev.gladkowski.wetaherapp.utils.network.UnitsInterceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Converter;
@@ -21,10 +22,12 @@ public interface CommonNetworkModule {
     @Provides
     @Singleton
     static OkHttpClient provideOkHttpClient(HttpLoggingInterceptor loggingInterceptor,
-                                            ApiKeyInterceptor apiKeyInterceptor) {
+                                            ApiKeyInterceptor apiKeyInterceptor,
+                                            UnitsInterceptor unitsInterceptor) {
         return new OkHttpClient.Builder()
-                .addInterceptor(apiKeyInterceptor)
                 .addInterceptor(loggingInterceptor)
+                .addInterceptor(apiKeyInterceptor)
+                .addInterceptor(unitsInterceptor)
                 .connectTimeout(AppConfig.DEFAULT_TIMEOUT, TimeUnit.SECONDS)
                 .readTimeout(AppConfig.DEFAULT_TIMEOUT, TimeUnit.SECONDS)
                 .build();
@@ -50,4 +53,9 @@ public interface CommonNetworkModule {
         return new ApiKeyInterceptor();
     }
 
+    @Provides
+    @Singleton
+    static UnitsInterceptor provideUnitsInterceptor() {
+        return new UnitsInterceptor();
+    }
 }

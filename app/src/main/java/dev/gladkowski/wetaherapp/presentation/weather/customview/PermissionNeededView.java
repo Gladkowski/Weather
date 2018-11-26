@@ -10,17 +10,6 @@ import dev.gladkowski.wetaherapp.R;
 import dev.gladkowski.wetaherapp.presentation.common.customview.BaseView;
 
 public class PermissionNeededView extends BaseView<PermissionNeededView.OnRequestPermissionListener> {
-//
-//    @BindView(R.id.radio_button_container)
-//    RadioRealButtonGroup buttonGroup;
-//    @BindView(R.id.radio_button_hour)
-//    RadioRealButton buttonHour;
-//    @BindView(R.id.radio_button_days)
-//    RadioRealButton buttonDay;
-//    @BindView(R.id.radio_button_week)
-//    RadioRealButton buttonWeek;
-//    @BindView(R.id.radio_button_month)
-//    RadioRealButton buttonMonth;
 
     private OnRequestPermissionListener onRequestPermissionListener;
 
@@ -47,13 +36,8 @@ public class PermissionNeededView extends BaseView<PermissionNeededView.OnReques
 
     @Override
     public void initListeners() {
-//        buttonGroup.setOnClickedButtonListener(this);
-    }
 
-//    @Override
-//    public void setCallbackListener(OnRequestPermissionListener callbackListener) {
-//        super.setCallbackListener(callbackListener);
-//    }
+    }
 
     @Override
     public void initData(Context context, AttributeSet attrs) {
