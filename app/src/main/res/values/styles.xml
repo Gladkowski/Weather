@@ -6,6 +6,24 @@
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowBackground">@drawable/back_night</item>
     </style>
+
+    <!-- Common style for text -->
+    <style name="CommonTextStyle" parent="@android:style/Widget.TextView">
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <!-- Style for medium text -->
+    <style name="MediumTextStyle" parent="@style/CommonTextStyle">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <!-- Style for large text -->
+    <style name="LargeTextStyle" parent="@style/CommonTextStyle">
+        <item name="android:textSize">40sp</item>
+    </style>
+
 
 </resources>
