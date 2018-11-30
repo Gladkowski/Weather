@@ -5,14 +5,12 @@ import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.inject.Provider;
 
 import butterknife.BindView;
@@ -21,7 +19,6 @@ import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 import dev.gladkowski.wetaherapp.R;
-import dev.gladkowski.wetaherapp.di.base.modules.BaseActivityModule;
 import dev.gladkowski.wetaherapp.presentation.common.ActivityCallback;
 import ru.terrakok.cicerone.Navigator;
 import ru.terrakok.cicerone.NavigatorHolder;
@@ -39,10 +36,6 @@ public abstract class BaseActivity<Presenter extends BasePresenter, BaseView ext
     protected Provider<Presenter> presenterProvider;
 
     protected Navigator localNavigator;
-
-    @Inject
-    @Named(BaseActivityModule.ACTIVITY_FRAGMENT_MANAGER)
-    protected FragmentManager fragmentManager;
 
     @Inject
     DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;

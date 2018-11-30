@@ -23,6 +23,7 @@ android {
     buildTypes.each {
         it.buildConfigField 'String', 'OwmApiKey', OwmApiKey
         it.buildConfigField 'String', 'OwmBaseUrl', OwmBaseUrl
+        it.buildConfigField 'String', 'MapBoxAccessToken', MapBoxAccessToken
     }
 }
 
@@ -89,4 +90,6 @@ dependencies {
         // if you don't use android.app.Fragment you can exclude support for them
         exclude module: "support-v13"
     }
+
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:6.7.1'
 }

@@ -4,10 +4,10 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorPrimary</item>
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowTranslucentNavigation">true</item>
-        <item name="android:windowBackground">@drawable/back_night</item>
+
+        <item name="actionOverflowButtonStyle">@style/actionOverflowButtonStyle</item>
     </style>
+
 
     <!-- Common style for text -->
     <style name="CommonTextStyle" parent="@android:style/Widget.TextView">
@@ -25,5 +25,10 @@
         <item name="android:textSize">40sp</item>
     </style>
 
+
+    <!-- This style is where you define the tint color of your overflow menu button -->
+    <style name="actionOverflowButtonStyle" parent="@style/Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:tint">@android:color/white</item>
+    </style>
 
 </resources>

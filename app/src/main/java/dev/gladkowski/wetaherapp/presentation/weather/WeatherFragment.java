@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +14,15 @@ import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
+import com.mapbox.mapboxsdk.location.LocationComponent;
+import com.mapbox.mapboxsdk.location.modes.CameraMode;
+import com.mapbox.mapboxsdk.maps.MapView;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 
 import butterknife.BindView;
 import dev.gladkowski.wetaherapp.R;
-import dev.gladkowski.wetaherapp.presentation.common.fragment.BaseFragment;
+import dev.gladkowski.wetaherapp.presentation.common.fragment.BaseMapFragment;
 import dev.gladkowski.wetaherapp.presentation.weather.customview.PermissionNeededView;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
@@ -30,18 +36,22 @@ import permissions.dispatcher.RuntimePermissions;
  * Fragment that shows weather
  */
 @RuntimePermissions
-public class WeatherFragment extends BaseFragment<WeatherPresenter, WeatherView>
+public class WeatherFragment extends BaseMapFragment<WeatherPresenter, WeatherView>
         implements WeatherView, PermissionNeededView.OnRequestPermissionListener {
 
     @InjectPresenter
     WeatherPresenter weatherPresenter;
 
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
     @BindView(R.id.refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.text_temperature)
     TextView textView;
     @BindView(R.id.view_permission_needed)
     PermissionNeededView permissionNeededView;
+    @BindView(R.id.map_view)
+    MapView mapView;
 
     public WeatherFragment() {
     }
@@ -73,9 +83,29 @@ public class WeatherFragment extends BaseFragment<WeatherPresenter, WeatherView>
     }
 
     private void initViews() {
+        mapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(MapboxMap mapboxMap) {
+                LocationComponent locationComponent = mapboxMap.getLocationComponent();
+                locationComponent.activateLocationComponent(getActivity()); //TODO: permission
+                locationComponent.setLocationComponentEnabled(true);
+                locationComponent.setCameraMode(CameraMode.TRACKING);
+
+                //TODO: location change listener
+            }
+        });
+
         permissionNeededView.setCallbackListener(this);
         swipeRefreshLayout.setOnRefreshListener(() -> {
 //                getPresenter().refresh();
+        });
+        toolbar.inflateMenu(R.menu.menu_settings);
+        toolbar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.item_language_settings) {
+//                getPresenter().onShowLanguageSettingsDialog();
+            }
+
+            return false;
         });
     }
 
@@ -92,6 +122,11 @@ public class WeatherFragment extends BaseFragment<WeatherPresenter, WeatherView>
     @Override
     protected WeatherPresenter getPresenter() {
         return weatherPresenter;
+    }
+
+    @Override
+    public MapView getMapView() {
+        return mapView;
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -176,10 +211,4 @@ public class WeatherFragment extends BaseFragment<WeatherPresenter, WeatherView>
                     .show();
         }
     }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
-
 }

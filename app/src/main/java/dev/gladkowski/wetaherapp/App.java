@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Application;
 import android.support.v7.app.AppCompatDelegate;
 
+import com.mapbox.mapboxsdk.Mapbox;
+
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import javax.inject.Inject;
@@ -28,6 +30,7 @@ public class App extends Application implements HasActivityInjector {
 
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
+        Mapbox.getInstance(this, (BuildConfig.MapBoxAccessToken));
     }
 
     @Override

@@ -41,4 +41,5 @@ public interface WeatherView extends BaseFragmentView {
      */
     @StateStrategyType(AddToEndSingleStrategy.class)
     void hideWeatherViews();
+
 }
