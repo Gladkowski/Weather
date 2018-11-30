@@ -19,7 +19,6 @@ import dagger.android.support.AndroidSupportInjection;
 import dev.gladkowski.wetaherapp.presentation.common.ActivityCallback;
 import dev.gladkowski.wetaherapp.presentation.common.activity.BasePresenter;
 
-
 /**
  * Base mvp fragment
  *
