@@ -50,6 +50,7 @@ public class WeatherPresenter extends BaseNetworkPresenter<WeatherView> {
 
     @Override
     public void initData() {
+//        getViewState().onSetTitle(resourceProvider.getTitle());
         getViewState().checkPermissions();
     }
 

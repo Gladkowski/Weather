@@ -35,6 +35,7 @@ def retrofit = '2.4.0'
 def gson = '2.8.2'
 def moxy = '1.5.3'
 def rxJava = '2.1.6'
+def cicerone = '3.0.0'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -68,7 +69,7 @@ dependencies {
     annotationProcessor "com.arello-mobile:moxy-compiler:${moxy}"
     implementation "com.arello-mobile:moxy-app-compat:${moxy}"
 
-    implementation 'ru.terrakok.cicerone:cicerone:3.0.0'
+    implementation "ru.terrakok.cicerone:cicerone:${cicerone}"
 
     implementation 'com.hannesdorfmann:adapterdelegates3:3.0.1'
 

@@ -50,6 +50,7 @@ public abstract class BaseActivity<Presenter extends BasePresenter, BaseView ext
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(getLayoutActivity());

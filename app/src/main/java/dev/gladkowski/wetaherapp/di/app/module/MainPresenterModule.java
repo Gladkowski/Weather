@@ -1,5 +1,7 @@
 package dev.gladkowski.wetaherapp.di.app.module;
 
+import android.support.v4.app.FragmentManager;
+
 import dagger.Module;
 import dagger.Provides;
 import dev.gladkowski.wetaherapp.di.base.scopes.ActivityScope;
@@ -11,7 +13,7 @@ public interface MainPresenterModule {
 
     @Provides
     @ActivityScope
-    static MainPresenter bindMainPresenter(Router router) {
-        return new MainPresenter(router);
+    static MainPresenter bindMainPresenter(Router router, FragmentManager fragmentManager) {
+        return new MainPresenter(router, fragmentManager);
     }
 }

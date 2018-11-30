@@ -1,27 +1,21 @@
-package dev.gladkowski.wetaherapp.presentation.weather;
+package dev.gladkowski.wetaherapp.presentation.permission;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
-import com.mapbox.mapboxsdk.location.LocationComponent;
-import com.mapbox.mapboxsdk.location.modes.CameraMode;
-import com.mapbox.mapboxsdk.maps.MapView;
 
 import butterknife.BindView;
 import dev.gladkowski.wetaherapp.R;
-import dev.gladkowski.wetaherapp.presentation.common.fragment.BaseMapFragment;
+import dev.gladkowski.wetaherapp.presentation.common.fragment.BaseFragment;
 import dev.gladkowski.wetaherapp.presentation.weather.customview.PermissionNeededView;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
@@ -30,40 +24,33 @@ import permissions.dispatcher.OnShowRationale;
 import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.RuntimePermissions;
 
-
 /**
- * Fragment that shows weather
+ * Fragment that checks permissions
  */
 @RuntimePermissions
-public class WeatherFragment extends BaseMapFragment<WeatherPresenter, WeatherView>
-        implements WeatherView, PermissionNeededView.OnRequestPermissionListener {
+public class PermissionFragment extends BaseFragment<PermissionPresenter, PermissionView>
+        implements PermissionView, PermissionNeededView.OnRequestPermissionListener {
 
     @InjectPresenter
-    WeatherPresenter weatherPresenter;
+    PermissionPresenter permissionPresenter;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.refresh_layout)
-    SwipeRefreshLayout swipeRefreshLayout;
-    @BindView(R.id.text_temperature)
-    TextView textView;
     @BindView(R.id.view_permission_needed)
     PermissionNeededView permissionNeededView;
-    @BindView(R.id.map_view)
-    MapView mapView;
 
-    public WeatherFragment() {
+    public PermissionFragment() {
     }
 
-    public static WeatherFragment newInstance() {
-        WeatherFragment fragment = new WeatherFragment();
+    public static PermissionFragment newInstance() {
+        PermissionFragment fragment = new PermissionFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
     }
 
     @ProvidePresenter
-    WeatherPresenter provideMoviesPresenter() {
+    PermissionPresenter provideMoviesPresenter() {
         return presenterProvider.get();
     }
 
@@ -71,7 +58,7 @@ public class WeatherFragment extends BaseMapFragment<WeatherPresenter, WeatherVi
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_weather, container, false);
+        return inflater.inflate(R.layout.fragment_permission, container, false);
     }
 
     @Override
@@ -81,35 +68,14 @@ public class WeatherFragment extends BaseMapFragment<WeatherPresenter, WeatherVi
         initViews();
     }
 
-    @SuppressLint("MissingPermission")
     private void initViews() {
-        mapView.getMapAsync(mapboxMap -> {
-            if (getActivity() != null) {
-                LocationComponent locationComponent = mapboxMap.getLocationComponent();
-                locationComponent.activateLocationComponent(getActivity());
-                locationComponent.setLocationComponentEnabled(true);
-                locationComponent.setCameraMode(CameraMode.TRACKING);
-            }
-        });
-
         permissionNeededView.setCallbackListener(this);
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-//                getPresenter().refresh();
-        });
-        toolbar.inflateMenu(R.menu.menu_settings);
-        toolbar.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.item_language_settings) {
-//                getPresenter().onShowLanguageSettingsDialog();
-            }
-
-            return false;
-        });
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        WeatherFragmentPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+        PermissionFragmentPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -117,13 +83,8 @@ public class WeatherFragment extends BaseMapFragment<WeatherPresenter, WeatherVi
     ///////////////////////////////////////////////////////////////////////////
 
     @Override
-    protected WeatherPresenter getPresenter() {
-        return weatherPresenter;
-    }
-
-    @Override
-    public MapView getMapView() {
-        return mapView;
+    protected PermissionPresenter getPresenter() {
+        return permissionPresenter;
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -131,8 +92,13 @@ public class WeatherFragment extends BaseMapFragment<WeatherPresenter, WeatherVi
     ///////////////////////////////////////////////////////////////////////////
 
     @Override
+    public void onSetTitle(String title) {
+        toolbar.setTitle(title);
+    }
+
+    @Override
     public void checkPermissions() {
-        WeatherFragmentPermissionsDispatcher.loadDataWithPermissionCheck(this);
+        PermissionFragmentPermissionsDispatcher.loadDataWithPermissionCheck(this);
     }
 
     @Override
@@ -143,20 +109,6 @@ public class WeatherFragment extends BaseMapFragment<WeatherPresenter, WeatherVi
     @Override
     public void hidePermissionNeededView() {
         permissionNeededView.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void showWeatherViews() {
-        textView.setVisibility(View.VISIBLE);
-        swipeRefreshLayout.setEnabled(true);
-//        swipeRefreshLayout.setRefreshing(true);
-    }
-
-    @Override
-    public void hideWeatherViews() {
-        textView.setVisibility(View.GONE);
-        swipeRefreshLayout.setEnabled(false);
-//        swipeRefreshLayout.setRefreshing(false);
     }
 
     ///////////////////////////////////////////////////////////////////////////

@@ -1,4 +1,9 @@
 <resources>
+    <!-- Launcher theme. -->
+    <style name="AppTheme.Launcher">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
+    </style>
+
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -7,7 +12,6 @@
 
         <item name="actionOverflowButtonStyle">@style/actionOverflowButtonStyle</item>
     </style>
-
 
     <!-- Common style for text -->
     <style name="CommonTextStyle" parent="@android:style/Widget.TextView">
@@ -26,7 +30,7 @@
     </style>
 
 
-    <!-- This style is where you define the tint color of your overflow menu button -->
+    <!-- Style for overflow menu button -->
     <style name="actionOverflowButtonStyle" parent="@style/Widget.AppCompat.ActionButton.Overflow">
         <item name="android:tint">@android:color/white</item>
     </style>

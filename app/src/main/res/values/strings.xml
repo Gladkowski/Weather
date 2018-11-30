@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Wetaher App</string>
+    <string name="app_name">Weather App</string>
 
     <!--Network errors-->
     <string name="error_no_internet">Please check your internet connection and try again</string>
@@ -11,6 +11,6 @@
 
     <!--Permission strings-->
     <string name="permission_location_message">App would like to access your locations to show the correct weather.</string>
-    <string name="permission_ok">Ok</string>
+    <string name="permission_ok">OK</string>
     <string name="permission_dont_allow">Don\'t Allow</string>
 </resources>
