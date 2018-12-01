@@ -7,4 +7,7 @@
     <color name="colorTransparentGray">#7d000000</color>
     <color name="colorLoadingBackground">#313131</color>
 
+    <color name="colorButtonGreen">#008f13</color>
+    <color name="colorButtonPressedGreen">#02bc1b</color>
+
 </resources>
