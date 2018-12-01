@@ -154,6 +154,7 @@ public class PermissionFragment extends BaseFragment<PermissionPresenter, Permis
     void showRationaleForLocationPermission(final PermissionRequest request) {
         if (getContext() != null) {
             new AlertDialog.Builder(getContext())
+                    .setCancelable(false)
                     .setMessage(R.string.permission_location_message)
                     .setPositiveButton(R.string.permission_ok, (dialog, button) -> request.proceed())
                     .setNegativeButton(R.string.permission_dont_allow, (dialog, button) -> request.cancel())
