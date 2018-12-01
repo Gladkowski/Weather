@@ -14,7 +14,7 @@
     <string name="permission_ok">OK</string>
     <string name="permission_dont_allow">Don\'t Allow</string>
     <string name="permission_needed">In order to work properly app needs to access your location</string>
-    <string name="permission_request">Grant location</string>
+    <string name="permission_request">Grant location access</string>
 
     <!--Content description-->
     <string name="image_permission_needed">image_permission_needed</string>
