@@ -110,7 +110,7 @@ public class WeatherFragment extends BaseMapFragment<WeatherPresenter, WeatherVi
         });
 
         swipeRefreshLayout.setOnRefreshListener(() -> {
-//                getPresenter().refresh();
+            getPresenter().refresh();
         });
         toolbar.inflateMenu(R.menu.menu_settings);
         toolbar.setOnMenuItemClickListener(item -> {
@@ -169,5 +169,13 @@ public class WeatherFragment extends BaseMapFragment<WeatherPresenter, WeatherVi
     // UI METHODS
     ///////////////////////////////////////////////////////////////////////////
 
+    @Override
+    public void onShowRefreshLoading() {
+        swipeRefreshLayout.setRefreshing(true);
+    }
 
+    @Override
+    public void onHideRefreshLoading() {
+        swipeRefreshLayout.setRefreshing(false);
+    }
 }

@@ -79,4 +79,20 @@ public class WeatherPresenter extends BaseNetworkPresenter<WeatherView> {
 
         unsubscribeOnDestroy(subscription);
     }
+
+    void refresh() {
+        getViewState().onShowRefreshLoading();
+
+        Disposable subscription = weatherInteractor.getLocalWeather()
+                .map(weatherConverter)
+                .subscribe(weatherViewModel -> {
+                    getViewState().showCurrentWeatherData(weatherViewModel);
+                    getViewState().onHideRefreshLoading();
+                }, exception -> {
+                    processErrors(exception);
+                    getViewState().onHideRefreshLoading();
+                });
+
+        unsubscribeOnDestroy(subscription);
+    }
 }
