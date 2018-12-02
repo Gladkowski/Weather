@@ -1,16 +1,15 @@
 package dev.gladkowski.wetaherapp.presentation.weather;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -19,38 +18,43 @@ import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
 import com.mapbox.mapboxsdk.maps.MapView;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import dev.gladkowski.wetaherapp.R;
+import dev.gladkowski.wetaherapp.entity.weather.presentation.WeatherViewModel;
 import dev.gladkowski.wetaherapp.presentation.common.fragment.BaseMapFragment;
-import dev.gladkowski.wetaherapp.presentation.weather.customview.PermissionNeededView;
-import permissions.dispatcher.NeedsPermission;
-import permissions.dispatcher.OnNeverAskAgain;
-import permissions.dispatcher.OnPermissionDenied;
-import permissions.dispatcher.OnShowRationale;
-import permissions.dispatcher.PermissionRequest;
-import permissions.dispatcher.RuntimePermissions;
+import dev.gladkowski.wetaherapp.presentation.weather.converter.WeatherImageConverter;
 
 
 /**
  * Fragment that shows weather
  */
-@RuntimePermissions
 public class WeatherFragment extends BaseMapFragment<WeatherPresenter, WeatherView>
-        implements WeatherView, PermissionNeededView.OnRequestPermissionListener {
+        implements WeatherView {
 
     @InjectPresenter
     WeatherPresenter weatherPresenter;
+
+    @Inject
+    WeatherImageConverter imageConverter;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
-    @BindView(R.id.text_temperature)
-    TextView textView;
-    @BindView(R.id.view_permission_needed)
-    PermissionNeededView permissionNeededView;
     @BindView(R.id.map_view)
     MapView mapView;
+
+    @BindView(R.id.image_weather_condition)
+    ImageView imageWeatherCondition;
+    @BindView(R.id.text_temperature)
+    TextView textTemperature;
+    @BindView(R.id.text_description)
+    TextView textDescription;
+    @BindView(R.id.text_temperature_spread)
+    TextView textTemperatureSpread;
+
 
     public WeatherFragment() {
     }
@@ -92,24 +96,17 @@ public class WeatherFragment extends BaseMapFragment<WeatherPresenter, WeatherVi
             }
         });
 
-        permissionNeededView.setCallbackListener(this);
         swipeRefreshLayout.setOnRefreshListener(() -> {
 //                getPresenter().refresh();
         });
         toolbar.inflateMenu(R.menu.menu_settings);
         toolbar.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.item_language_settings) {
-//                getPresenter().onShowLanguageSettingsDialog();
+            if (item.getItemId() == R.id.item_settings) {
+//                getPresenter().onShowSettingsDialog();
             }
 
             return false;
         });
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        WeatherFragmentPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -131,81 +128,26 @@ public class WeatherFragment extends BaseMapFragment<WeatherPresenter, WeatherVi
     ///////////////////////////////////////////////////////////////////////////
 
     @Override
-    public void checkPermissions() {
-        WeatherFragmentPermissionsDispatcher.loadDataWithPermissionCheck(this);
+    public void onSetTitle(String title) {
+        toolbar.setTitle(title);
     }
 
     @Override
-    public void showPermissionNeededView() {
-        permissionNeededView.setVisibility(View.VISIBLE);
+    public void showCurrentWeatherData(WeatherViewModel viewModel) {
+        onSetTitle(viewModel.getName());
+        imageWeatherCondition.setImageResource(imageConverter.getImageResource(
+                viewModel.getWeatherCondition(),
+                viewModel.getSunriseDatetTime(),
+                viewModel.getSunsetDateTime()));
+        textTemperature.setText(viewModel.getTemperature());
+        textDescription.setText(viewModel.getWeatherDescription());
+        textTemperatureSpread.setText(viewModel.getTemperatureSpread());
     }
 
-    @Override
-    public void hidePermissionNeededView() {
-        permissionNeededView.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void showWeatherViews() {
-        textView.setVisibility(View.VISIBLE);
-        swipeRefreshLayout.setEnabled(true);
-//        swipeRefreshLayout.setRefreshing(true);
-    }
-
-    @Override
-    public void hideWeatherViews() {
-        textView.setVisibility(View.GONE);
-        swipeRefreshLayout.setEnabled(false);
-//        swipeRefreshLayout.setRefreshing(false);
-    }
 
     ///////////////////////////////////////////////////////////////////////////
     // UI METHODS
     ///////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Request permission by clicking a button in PermissionNeededView
-     */
-    @Override
-    public void onRequestPermission() {
-        checkPermissions();
-    }
 
-    /**
-     * Permission denied
-     */
-    @OnPermissionDenied({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
-    void showDeniedForLocationPermission() {
-        getPresenter().onPermissionDenied();
-    }
-
-    /**
-     * Permission successfully granted from the system permission request
-     */
-    @OnNeverAskAgain({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
-    void showNeverAskForLocationPermission() {
-        getPresenter().onPermissionsGranted();
-    }
-
-    /**
-     * Permission successfully granted
-     */
-    @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
-    public void loadData() {
-        getPresenter().onPermissionsGranted();
-    }
-
-    /**
-     * Show permission request dialog
-     */
-    @OnShowRationale({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
-    void showRationaleForLocationPermission(final PermissionRequest request) {
-        if (getContext() != null) {
-            new AlertDialog.Builder(getContext())
-                    .setMessage(R.string.permission_location_message)
-                    .setPositiveButton(R.string.permission_ok, (dialog, button) -> request.proceed())
-                    .setNegativeButton(R.string.permission_dont_allow, (dialog, button) -> request.cancel())
-                    .show();
-        }
-    }
 }

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/item_language_settings"
+        android:id="@+id/item_settings"
         android:title="settings"
         app:showAsAction="never" />
 

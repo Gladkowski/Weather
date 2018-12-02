@@ -6,6 +6,8 @@ import com.arellomobile.mvp.InjectViewState;
 
 import dev.gladkowski.wetaherapp.domain.weather.WeatherInteractor;
 import dev.gladkowski.wetaherapp.presentation.common.activity.BaseNetworkPresenter;
+import dev.gladkowski.wetaherapp.presentation.weather.converter.WeatherViewModelConverter;
+import dev.gladkowski.wetaherapp.presentation.weather.provider.WeatherResourceProvider;
 import dev.gladkowski.wetaherapp.utils.rx.ErrorResourceProvider;
 import io.reactivex.disposables.Disposable;
 import ru.terrakok.cicerone.Router;
@@ -22,13 +24,21 @@ public class WeatherPresenter extends BaseNetworkPresenter<WeatherView> {
     private ErrorResourceProvider errorResourceProvider;
     @NonNull
     private WeatherInteractor weatherInteractor;
+    @NonNull
+    private WeatherResourceProvider resourceProvider;
+    @NonNull
+    private WeatherViewModelConverter weatherConverter;
 
     public WeatherPresenter(@NonNull Router router,
                             @NonNull ErrorResourceProvider errorResourceProvider,
-                            @NonNull WeatherInteractor weatherInteractor) {
+                            @NonNull WeatherInteractor weatherInteractor,
+                            @NonNull WeatherResourceProvider resourceProvider,
+                            @NonNull WeatherViewModelConverter weatherConverter) {
         this.router = router;
         this.errorResourceProvider = errorResourceProvider;
         this.weatherInteractor = weatherInteractor;
+        this.resourceProvider = resourceProvider;
+        this.weatherConverter = weatherConverter;
     }
 
     @NonNull
@@ -50,28 +60,18 @@ public class WeatherPresenter extends BaseNetworkPresenter<WeatherView> {
 
     @Override
     public void initData() {
-//        getViewState().onSetTitle(resourceProvider.getTitle());
-        getViewState().checkPermissions();
-    }
-
-    void onPermissionsGranted() {
-        getViewState().hidePermissionNeededView();
-        getViewState().showWeatherViews();
+        getViewState().onSetTitle(resourceProvider.getTitle());
         getWeather();
-    }
-
-    void onPermissionDenied() {
-        getViewState().showPermissionNeededView();
-        getViewState().hideWeatherViews();
     }
 
     private void getWeather() {
         getViewState().onShowLoading();
 
         Disposable subscription = weatherInteractor.getLocalWeather()
-                .subscribe(movieItem -> {
+                .map(weatherConverter)
+                .subscribe(weatherViewModel -> {
+                    getViewState().showCurrentWeatherData(weatherViewModel);
                     getViewState().onHideLoading();
-
                 }, exception -> {
                     processErrors(exception);
                     getViewState().onHideLoading();

@@ -7,6 +7,7 @@ import org.joda.time.DateTime;
  */
 public class Weather {
 
+    private String name;
     private Double temperature;
     private Double temperatureMin;
     private Double temperatureMax;
@@ -19,10 +20,11 @@ public class Weather {
     private Integer visibility;
     private String weatherDescription;
 
-    public Weather(Double temperature, Double temperatureMin, Double temperatureMax,
-                   Integer pressure, Integer humidity, Integer weatherCondition,
-                   Double windSpeed, DateTime sunrise, DateTime sunset, Integer visibility,
+    public Weather(String name, Double temperature, Double temperatureMin, Double temperatureMax,
+                   Integer pressure, Integer humidity, Integer weatherCondition, Double windSpeed,
+                   DateTime sunrise, DateTime sunset, Integer visibility,
                    String weatherDescription) {
+        this.name = name;
         this.temperature = temperature;
         this.temperatureMin = temperatureMin;
         this.temperatureMax = temperatureMax;
@@ -34,6 +36,10 @@ public class Weather {
         this.sunset = sunset;
         this.visibility = visibility;
         this.weatherDescription = weatherDescription;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public Double getTemperature() {

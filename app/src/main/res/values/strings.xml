@@ -16,6 +16,11 @@
     <string name="permission_needed">In order to work properly app needs to access your location</string>
     <string name="permission_request">Grant location access</string>
 
+    <!--Weather fragment-->
+    <string name="weather_celsius">°C</string>
+
+
+
     <!--Content description-->
     <string name="image_permission_needed">image_permission_needed</string>
 

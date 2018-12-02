@@ -6,6 +6,12 @@ import dagger.Module;
 import dagger.Provides;
 import dev.gladkowski.wetaherapp.data.repository.weather.converter.WeatherByCoordinatesResponseConverter;
 import dev.gladkowski.wetaherapp.data.repository.weather.converter.WeatherByCoordinatesResponseConverterImpl;
+import dev.gladkowski.wetaherapp.presentation.weather.converter.WeatherImageConverter;
+import dev.gladkowski.wetaherapp.presentation.weather.converter.WeatherImageConverterImpl;
+import dev.gladkowski.wetaherapp.presentation.weather.converter.WeatherViewModelConverter;
+import dev.gladkowski.wetaherapp.presentation.weather.converter.WeatherViewModelConverterImpl;
+import dev.gladkowski.wetaherapp.presentation.weather.provider.WeatherResourceProvider;
+import dev.gladkowski.wetaherapp.presentation.weather.provider.WeatherResourceProviderImpl;
 import dev.gladkowski.wetaherapp.utils.location.LocationProvider;
 import dev.gladkowski.wetaherapp.utils.location.LocationProviderImpl;
 
@@ -18,7 +24,22 @@ public interface WeatherUtilsModule {
     }
 
     @Provides
-    static LocationProvider providLocationProvider(Context context) {
+    static LocationProvider provideLocationProvider(Context context) {
         return new LocationProviderImpl(context);
+    }
+
+    @Provides
+    static WeatherResourceProvider provideWeatherResourceProvider(Context context) {
+        return new WeatherResourceProviderImpl(context);
+    }
+
+    @Provides
+    static WeatherViewModelConverter provideWeatherViewModelConverter(WeatherResourceProvider resourceProvider) {
+        return new WeatherViewModelConverterImpl(resourceProvider);
+    }
+
+    @Provides
+    static WeatherImageConverter provideWeatherImageConverter() {
+        return new WeatherImageConverterImpl();
     }
 }
