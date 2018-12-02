@@ -17,7 +17,7 @@ import dev.gladkowski.wetaherapp.presentation.weather.converter.WeatherViewModel
 import dev.gladkowski.wetaherapp.presentation.weather.provider.WeatherResourceProvider;
 import dev.gladkowski.wetaherapp.presentation.weather.provider.WeatherResourceProviderImpl;
 import dev.gladkowski.wetaherapp.utils.location.LocationProvider;
-import dev.gladkowski.wetaherapp.utils.location.LocationProviderImpl;
+import dev.gladkowski.wetaherapp.utils.location.SmartLocationProviderImpl;
 
 @Module
 public interface WeatherUtilsModule {
@@ -32,10 +32,21 @@ public interface WeatherUtilsModule {
         return new ForecastByCoordinatesResponseConverterImpl();
     }
 
+    /**
+     * SmartLocation implementation of LocationProvider
+     */
     @Provides
     static LocationProvider provideLocationProvider(Context context) {
-        return new LocationProviderImpl(context);
+        return new SmartLocationProviderImpl(context);
     }
+
+    /**
+     * Android implementation of LocationProvider
+     */
+//    @Provides
+//    static LocationProvider provideAndroidLocationProviderImpl(Context context) {
+//        return new AndroidLocationProviderImpl(context);
+//    }
 
     @Provides
     static WeatherResourceProvider provideWeatherResourceProvider(Context context) {

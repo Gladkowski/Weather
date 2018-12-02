@@ -14,12 +14,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Implementation of WeatherRepository
  */
-public class WeatherRepositoryImpl implements WeatherRepository
-//        ,
-//        GoogleApiClient.ConnectionCallbacks,
-//        GoogleApiClient.OnConnectionFailedListener,
-//        com.google.android.gms.location.LocationListener
-{
+public class WeatherRepositoryImpl implements WeatherRepository {
 
     private WeatherApi weatherApi;
     private WeatherByCoordinatesResponseConverter weatherConverter;
@@ -55,48 +50,4 @@ public class WeatherRepositoryImpl implements WeatherRepository
                 )
                 .map(forecastConverter);
     }
-
-    ///////////////////
-//    private GoogleApiClient client;
-//    private LocationRequest locationRequest;
-//    private FusedLocationProviderClient fusedLocationProviderClient;
-//
-//    private void locationTest() {
-//
-//        LocationRequest locationRequest = new LocationRequest();
-//        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-//        locationRequest.setInterval(10000);
-//        locationRequest.setFastestInterval(5000);
-//
-//        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context);
-//
-//        client = new GoogleApiClient.Builder(context)
-//                .addApi(LocationServices.API)
-//                .addConnectionCallbacks(this)
-//                .addOnConnectionFailedListener(this)
-//                .build();
-//        client.connect();
-//    }
-//
-//    @SuppressLint("MissingPermission")
-//    @Override
-//    public void onConnected(@Nullable Bundle bundle) {
-//        Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(client);
-//        Log.v("LOCATION_TEST", String.valueOf(mLastLocation.getLatitude()));
-//    }
-//
-//    @Override
-//    public void onConnectionSuspended(int i) {
-//        client.connect();
-//    }
-//
-//    @Override
-//    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-//
-//    }
-//
-//    @Override
-//    public void onLocationChanged(Location location) {
-//        Log.v("LOCATION_TEST", String.valueOf(location.getLatitude()));
-//    }
 }

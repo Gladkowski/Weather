@@ -10,11 +10,11 @@ import io.reactivex.subjects.SingleSubject;
 /**
  * Implementation of LocationProvider
  */
-public class LocationProviderImpl implements LocationProvider {
+public class SmartLocationProviderImpl implements LocationProvider {
 
     private Context context;
 
-    public LocationProviderImpl(Context context) {
+    public SmartLocationProviderImpl(Context context) {
         this.context = context;
     }
 
