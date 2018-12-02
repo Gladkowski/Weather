@@ -100,6 +100,8 @@ public class WeatherFragment extends BaseMapFragment<WeatherPresenter, WeatherVi
 
     @SuppressLint("MissingPermission")
     private void initViews() {
+        swipeRefreshLayout.setOnRefreshListener(() -> getPresenter().refresh());
+
         mapView.getMapAsync(mapboxMap -> {
             if (getActivity() != null) {
                 LocationComponent locationComponent = mapboxMap.getLocationComponent();
@@ -107,18 +109,6 @@ public class WeatherFragment extends BaseMapFragment<WeatherPresenter, WeatherVi
                 locationComponent.setLocationComponentEnabled(true);
                 locationComponent.setCameraMode(CameraMode.TRACKING);
             }
-        });
-
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            getPresenter().refresh();
-        });
-        toolbar.inflateMenu(R.menu.menu_settings);
-        toolbar.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.item_settings) {
-//                getPresenter().onShowSettingsDialog();
-            }
-
-            return false;
         });
     }
 
