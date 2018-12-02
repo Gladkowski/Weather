@@ -21,7 +21,57 @@ public class WeatherResourceProviderImpl implements WeatherResourceProvider {
     }
 
     @Override
-    public String getCelcius() {
+    public String getCelsius() {
         return context.getString(R.string.weather_celsius);
+    }
+
+    @Override
+    public String getPercents() {
+        return context.getString(R.string.weather_percents);
+    }
+
+    @Override
+    public String getMeters() {
+        return context.getString(R.string.weather_meters);
+    }
+
+    @Override
+    public String getMetersPerSecond() {
+        return context.getString(R.string.weather_meters_per_second);
+    }
+
+    @Override
+    public String getHumidity() {
+        return context.getString(R.string.weather_humidity);
+    }
+
+    @Override
+    public String getPressure() {
+        return context.getString(R.string.weather_pressure);
+    }
+
+    @Override
+    public String getWindSpeed() {
+        return context.getString(R.string.weather_wind_speed);
+    }
+
+    @Override
+    public String getSunrise() {
+        return context.getString(R.string.weather_sunrise);
+    }
+
+    @Override
+    public String getSunset() {
+        return context.getString(R.string.weather_sunset);
+    }
+
+    @Override
+    public String getVisibility() {
+        return context.getString(R.string.weather_visibility);
+    }
+
+    @Override
+    public String getUnknown() {
+        return context.getString(R.string.weather_unknown);
     }
 }

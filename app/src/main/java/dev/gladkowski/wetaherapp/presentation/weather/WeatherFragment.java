@@ -55,6 +55,19 @@ public class WeatherFragment extends BaseMapFragment<WeatherPresenter, WeatherVi
     @BindView(R.id.text_temperature_spread)
     TextView textTemperatureSpread;
 
+    @BindView(R.id.text_sunrise)
+    TextView textSunrise;
+    @BindView(R.id.text_sunset)
+    TextView textSunset;
+    @BindView(R.id.text_visibility)
+    TextView textVisibility;
+    @BindView(R.id.text_humidity)
+    TextView textHumidity;
+    @BindView(R.id.text_pressure)
+    TextView textPressure;
+    @BindView(R.id.text_wind_speed)
+    TextView textWindSpeed;
+
 
     public WeatherFragment() {
     }
@@ -142,6 +155,13 @@ public class WeatherFragment extends BaseMapFragment<WeatherPresenter, WeatherVi
         textTemperature.setText(viewModel.getTemperature());
         textDescription.setText(viewModel.getWeatherDescription());
         textTemperatureSpread.setText(viewModel.getTemperatureSpread());
+
+        textSunrise.setText(viewModel.getSunrise());
+        textSunset.setText(viewModel.getSunset());
+        textVisibility.setText(viewModel.getVisibility());
+        textHumidity.setText(viewModel.getHumidity());
+        textPressure.setText(viewModel.getPressure());
+        textWindSpeed.setText(viewModel.getWindSpeed());
     }
 
 

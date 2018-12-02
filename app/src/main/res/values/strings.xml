@@ -18,10 +18,19 @@
 
     <!--Weather fragment-->
     <string name="weather_celsius">°C</string>
-
-
+    <string name="weather_percents">%</string>
+    <string name="weather_meters">m</string>
+    <string name="weather_meters_per_second">m/s</string>
+    <string name="weather_humidity">Humidity</string>
+    <string name="weather_pressure">Pressure</string>
+    <string name="weather_wind_speed">Wind speed</string>
+    <string name="weather_sunrise">Sunrise</string>
+    <string name="weather_sunset">Sunset</string>
+    <string name="weather_visibility">Visibility</string>
+    <string name="weather_unknown">Unknown</string>
 
     <!--Content description-->
     <string name="image_permission_needed">image_permission_needed</string>
+    <string name="image_weather_condition">image_weather_condition</string>
 
 </resources>

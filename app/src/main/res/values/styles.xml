@@ -19,14 +19,19 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
+    <!-- Style for large text -->
+    <style name="LargeTextStyle" parent="@style/CommonTextStyle">
+        <item name="android:textSize">40sp</item>
+    </style>
+
     <!-- Style for medium text -->
     <style name="MediumTextStyle" parent="@style/CommonTextStyle">
         <item name="android:textSize">20sp</item>
     </style>
 
     <!-- Style for large text -->
-    <style name="LargeTextStyle" parent="@style/CommonTextStyle">
-        <item name="android:textSize">40sp</item>
+    <style name="SmallTextStyle" parent="@style/CommonTextStyle">
+        <item name="android:textSize">14sp</item>
     </style>
 
 

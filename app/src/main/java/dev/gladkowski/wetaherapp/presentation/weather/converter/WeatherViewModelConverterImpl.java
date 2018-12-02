@@ -1,5 +1,8 @@
 package dev.gladkowski.wetaherapp.presentation.weather.converter;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+
 import dev.gladkowski.wetaherapp.entity.weather.domain.ConditionsConstants;
 import dev.gladkowski.wetaherapp.entity.weather.domain.Weather;
 import dev.gladkowski.wetaherapp.entity.weather.presentation.WeatherCondition;
@@ -21,14 +24,14 @@ public class WeatherViewModelConverterImpl implements WeatherViewModelConverter 
     public WeatherViewModel apply(Weather weather) throws Exception {
         return new WeatherViewModel(weather.getName(),
                 convertTemperature(weather.getTemperature()),
-                convertTempertureSpread(weather.getTemperatureMin(), weather.getTemperatureMax()),
-                String.valueOf(weather.getPressure()),
-                String.valueOf(weather.getHumidity()),
-                convertCondition(weather.getWeatherCondition()), //
-                String.valueOf(weather.getWindSpeed()),
-                String.valueOf(weather.getSunrise()),
-                String.valueOf(weather.getSunset()),
-                String.valueOf(weather.getVisibility()),
+                convertTemperatureSpread(weather.getTemperatureMin(), weather.getTemperatureMax()), //
+                convertPressure(weather.getPressure()),
+                convertHumidity(weather.getHumidity()),
+                convertCondition(weather.getWeatherCondition()),
+                convertWindSpeed(weather.getWindSpeed()),
+                convertSunrise(weather.getSunrise()),
+                convertSunset(weather.getSunset()),
+                convertVisibility(weather.getVisibility()),
                 capitalize(weather.getWeatherDescription()),
                 weather.getSunset(),
                 weather.getSunrise());
@@ -40,26 +43,48 @@ public class WeatherViewModelConverterImpl implements WeatherViewModelConverter 
         if (temperature > 0) {
             return "+"
                     .concat(String.valueOf(temperature))
-                    .concat(resourceProvider.getCelcius());
+                    .concat(resourceProvider.getCelsius());
         } else {
             return String.valueOf(temperature)
-                    .concat(resourceProvider.getCelcius());
+                    .concat(resourceProvider.getCelsius());
         }
     }
 
-    private String convertTempertureSpread(Double doubleTemperatureMin, Double doubleTemperatureMax) {
+    private String convertTemperatureSpread(Double doubleTemperatureMin, Double doubleTemperatureMax) {
         return convertTemperature(doubleTemperatureMin)
                 .concat("/")
                 .concat(convertTemperature(doubleTemperatureMax));
     }
 
-    private String capitalize(String string) {
-        return string.substring(0, 1).toUpperCase() + string.substring(1);
+    private String convertPressure(Integer pressure) {
+        if (pressure == null) {
+            return resourceProvider.getPressure()
+                    .concat(":")
+                    .concat(" ")
+                    .concat(resourceProvider.getUnknown());
+        } else {
+            return resourceProvider.getPressure()
+                    .concat(":")
+                    .concat(" ")
+                    .concat(String.valueOf(pressure));
+        }
     }
 
-    /**
-     * Convert weather condition id to weather condition
-     */
+    private String convertHumidity(Integer humidity) {
+        if (humidity == null) {
+            return resourceProvider.getHumidity()
+                    .concat(":")
+                    .concat(" ")
+                    .concat(resourceProvider.getUnknown());
+        } else {
+            return resourceProvider.getHumidity()
+                    .concat(":")
+                    .concat(" ")
+                    .concat(String.valueOf(humidity))
+                    .concat(resourceProvider.getPercents());
+        }
+    }
+
     private WeatherCondition convertCondition(Integer condition) {
         if (condition >= ConditionsConstants.THUNDERSTORM
                 && condition < ConditionsConstants.DRIZZLE) {
@@ -83,5 +108,69 @@ public class WeatherViewModelConverterImpl implements WeatherViewModelConverter 
         } else if (condition >= ConditionsConstants.MANY_CLOUDS) {
             return WeatherCondition.MANY_CLOUDS;
         } else return WeatherCondition.FEW_CLOUDS;
+    }
+
+    private String convertWindSpeed(Double speed) {
+        if (speed == null) {
+            return resourceProvider.getWindSpeed()
+                    .concat(":")
+                    .concat(" ")
+                    .concat(resourceProvider.getUnknown());
+        } else {
+            return resourceProvider.getWindSpeed()
+                    .concat(":")
+                    .concat(" ")
+                    .concat(String.valueOf((int) Math.round(speed)))
+                    .concat(" ")
+                    .concat(resourceProvider.getMetersPerSecond());
+        }
+    }
+
+    private String convertSunrise(DateTime dateTime) {
+        if (dateTime == null) {
+            return resourceProvider.getSunrise()
+                    .concat(":")
+                    .concat(" ")
+                    .concat(resourceProvider.getUnknown());
+        } else {
+            return resourceProvider.getSunrise()
+                    .concat(":")
+                    .concat(" ")
+                    .concat(dateTime.toString(DateTimeFormat.forPattern("HH:mm")));
+        }
+    }
+
+    private String convertSunset(DateTime dateTime) {
+        if (dateTime == null) {
+            return resourceProvider.getSunrise()
+                    .concat(":")
+                    .concat(" ")
+                    .concat(resourceProvider.getUnknown());
+        } else {
+            return resourceProvider.getSunset()
+                    .concat(":")
+                    .concat(" ")
+                    .concat(dateTime.toString(DateTimeFormat.forPattern("HH:mm")));
+        }
+    }
+
+    private String convertVisibility(Integer visibility) {
+        if (visibility == null) {
+            return resourceProvider.getVisibility()
+                    .concat(":")
+                    .concat(" ")
+                    .concat(resourceProvider.getUnknown());
+        } else {
+            return resourceProvider.getVisibility()
+                    .concat(":")
+                    .concat(" ")
+                    .concat(String.valueOf(visibility))
+                    .concat(" ")
+                    .concat(resourceProvider.getMeters());
+        }
+    }
+
+    private String capitalize(String string) {
+        return string.substring(0, 1).toUpperCase() + string.substring(1);
     }
 }
