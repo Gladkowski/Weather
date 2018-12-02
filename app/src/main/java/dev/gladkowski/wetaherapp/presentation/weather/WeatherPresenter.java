@@ -89,11 +89,7 @@ public class WeatherPresenter extends BaseNetworkPresenter<WeatherView> {
     private void getForecast() {
         Disposable subscription = weatherInteractor.getLocalForecast()
                 .map(forecastConverter)
-                .subscribe(forecast -> {
-                    getViewState().showList(forecast);
-                }, exception -> {
-                    processErrors(exception);
-                });
+                .subscribe(forecast -> getViewState().showList(forecast), this::processErrors);
 
         unsubscribeOnDestroy(subscription);
     }
