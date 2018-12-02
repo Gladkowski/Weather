@@ -19,7 +19,7 @@ public class WeatherViewModel {
     private String visibility;
     private String weatherDescription;
     private DateTime sunsetDateTime;
-    private DateTime sunriseDatetTime;
+    private DateTime sunriseDateTime;
 
     public WeatherViewModel(String name, String temperature, String temperatureSpread,
                             String pressure, String humidity, WeatherCondition weatherCondition,
@@ -38,7 +38,7 @@ public class WeatherViewModel {
         this.visibility = visibility;
         this.weatherDescription = weatherDescription;
         this.sunsetDateTime = sunsetDateTime;
-        this.sunriseDatetTime = sunriseDateTime;
+        this.sunriseDateTime = sunriseDateTime;
     }
 
     public String getName() {
@@ -89,7 +89,7 @@ public class WeatherViewModel {
         return sunsetDateTime;
     }
 
-    public DateTime getSunriseDatetTime() {
-        return sunriseDatetTime;
+    public DateTime getSunriseDateTime() {
+        return sunriseDateTime;
     }
 }

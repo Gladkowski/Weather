@@ -13,4 +13,7 @@ public interface WeatherImageConverter {
 
     @DrawableRes
     int getImageResource(WeatherCondition condition, DateTime sunrise, DateTime sunset);
+
+    @DrawableRes
+    int getImageResource(WeatherCondition condition);
 }

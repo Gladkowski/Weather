@@ -4,7 +4,13 @@ import android.support.annotation.NonNull;
 
 import com.arellomobile.mvp.InjectViewState;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import dev.gladkowski.wetaherapp.domain.weather.WeatherInteractor;
+import dev.gladkowski.wetaherapp.entity.weather.presentation.BaseForecastItem;
+import dev.gladkowski.wetaherapp.entity.weather.presentation.ForecastItem;
+import dev.gladkowski.wetaherapp.entity.weather.presentation.WeatherCondition;
 import dev.gladkowski.wetaherapp.presentation.common.activity.BaseNetworkPresenter;
 import dev.gladkowski.wetaherapp.presentation.weather.converter.WeatherViewModelConverter;
 import dev.gladkowski.wetaherapp.presentation.weather.provider.WeatherResourceProvider;
@@ -70,6 +76,19 @@ public class WeatherPresenter extends BaseNetworkPresenter<WeatherView> {
         Disposable subscription = weatherInteractor.getLocalWeather()
                 .map(weatherConverter)
                 .subscribe(weatherViewModel -> {
+                    List<BaseForecastItem> l = new ArrayList<>();
+                    l.add(new ForecastItem("+3|+5", WeatherCondition.CLEAR, "today"));
+                    l.add(new ForecastItem("+3|+5", WeatherCondition.CLEAR, "today"));
+                    l.add(new ForecastItem("+3|+5", WeatherCondition.CLEAR, "today"));
+                    l.add(new ForecastItem("+3|+5", WeatherCondition.CLEAR, "today"));
+                    l.add(new ForecastItem("+3|+5", WeatherCondition.CLEAR, "today"));
+                    l.add(new ForecastItem("+3|+5", WeatherCondition.CLEAR, "today"));
+                    l.add(new ForecastItem("+3|+5", WeatherCondition.CLEAR, "today"));
+                    l.add(new ForecastItem("+3|+5", WeatherCondition.CLEAR, "today"));
+                    l.add(new ForecastItem("+3|+5", WeatherCondition.CLEAR, "today"));
+
+                    getViewState().showList(l);
+
                     getViewState().showCurrentWeatherData(weatherViewModel);
                     getViewState().onHideLoading();
                 }, exception -> {

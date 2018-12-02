@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,12 +21,16 @@ import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
 import com.mapbox.mapboxsdk.maps.MapView;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import dev.gladkowski.wetaherapp.R;
+import dev.gladkowski.wetaherapp.entity.weather.presentation.BaseForecastItem;
 import dev.gladkowski.wetaherapp.entity.weather.presentation.WeatherViewModel;
 import dev.gladkowski.wetaherapp.presentation.common.fragment.BaseMapFragment;
+import dev.gladkowski.wetaherapp.presentation.weather.adapter.ForecastAdapter;
 import dev.gladkowski.wetaherapp.presentation.weather.converter.WeatherImageConverter;
 
 
@@ -50,7 +57,7 @@ public class WeatherFragment extends BaseMapFragment<WeatherPresenter, WeatherVi
     ImageView imageWeatherCondition;
     @BindView(R.id.text_temperature)
     TextView textTemperature;
-    @BindView(R.id.text_description)
+    @BindView(R.id.text_date)
     TextView textDescription;
     @BindView(R.id.text_temperature_spread)
     TextView textTemperatureSpread;
@@ -67,6 +74,11 @@ public class WeatherFragment extends BaseMapFragment<WeatherPresenter, WeatherVi
     TextView textPressure;
     @BindView(R.id.text_wind_speed)
     TextView textWindSpeed;
+
+    @BindView(R.id.recycler_view)
+    RecyclerView recyclerView;
+
+    private ForecastAdapter forecastAdapter;
 
 
     public WeatherFragment() {
@@ -96,8 +108,12 @@ public class WeatherFragment extends BaseMapFragment<WeatherPresenter, WeatherVi
         super.onViewCreated(view, savedInstanceState);
 
         initViews();
+        initList();
     }
 
+    /**
+     * SwipeRefresh and MapView initialization
+     */
     @SuppressLint("MissingPermission")
     private void initViews() {
         swipeRefreshLayout.setOnRefreshListener(() -> getPresenter().refresh());
@@ -110,6 +126,18 @@ public class WeatherFragment extends BaseMapFragment<WeatherPresenter, WeatherVi
                 locationComponent.setCameraMode(CameraMode.TRACKING);
             }
         });
+    }
+
+    /**
+     * LinearLayout initialization
+     */
+    private void initList() {
+        forecastAdapter = new ForecastAdapter(imageConverter);
+        recyclerView.setAdapter(forecastAdapter);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),
+                LinearLayoutManager.HORIZONTAL, false); //TODO: int to res
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -140,7 +168,7 @@ public class WeatherFragment extends BaseMapFragment<WeatherPresenter, WeatherVi
         onSetTitle(viewModel.getName());
         imageWeatherCondition.setImageResource(imageConverter.getImageResource(
                 viewModel.getWeatherCondition(),
-                viewModel.getSunriseDatetTime(),
+                viewModel.getSunriseDateTime(),
                 viewModel.getSunsetDateTime()));
         textTemperature.setText(viewModel.getTemperature());
         textDescription.setText(viewModel.getWeatherDescription());
@@ -154,6 +182,10 @@ public class WeatherFragment extends BaseMapFragment<WeatherPresenter, WeatherVi
         textWindSpeed.setText(viewModel.getWindSpeed());
     }
 
+    @Override
+    public void showList(List<BaseForecastItem> items) {
+        forecastAdapter.addItems(items);
+    }
 
     ///////////////////////////////////////////////////////////////////////////
     // UI METHODS
