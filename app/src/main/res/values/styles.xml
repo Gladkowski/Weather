@@ -1,7 +1,7 @@
 <resources>
     <!-- Launcher theme. -->
     <style name="AppTheme.Launcher">
-        <item name="android:windowBackground">@drawable/launch_screen</item>
+        <item name="android:windowBackground">@drawable/background_permission</item>
     </style>
 
     <!-- Base application theme. -->
