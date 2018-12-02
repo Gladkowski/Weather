@@ -74,4 +74,14 @@ public class WeatherResourceProviderImpl implements WeatherResourceProvider {
     public String getUnknown() {
         return context.getString(R.string.weather_unknown);
     }
+
+    @Override
+    public String getToday() {
+        return context.getString(R.string.weather_today);
+    }
+
+    @Override
+    public String getTomorrow() {
+        return context.getString(R.string.weather_tomorrow);
+    }
 }

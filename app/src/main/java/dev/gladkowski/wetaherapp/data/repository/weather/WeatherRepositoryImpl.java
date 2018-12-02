@@ -1,7 +1,11 @@
 package dev.gladkowski.wetaherapp.data.repository.weather;
 
+import java.util.List;
+
 import dev.gladkowski.wetaherapp.data.network.WeatherApi;
+import dev.gladkowski.wetaherapp.data.repository.weather.converter.ForecastByCoordinatesResponseConverter;
 import dev.gladkowski.wetaherapp.data.repository.weather.converter.WeatherByCoordinatesResponseConverter;
+import dev.gladkowski.wetaherapp.entity.weather.domain.Forecast;
 import dev.gladkowski.wetaherapp.entity.weather.domain.Weather;
 import dev.gladkowski.wetaherapp.utils.location.LocationProvider;
 import io.reactivex.Single;
@@ -18,14 +22,17 @@ public class WeatherRepositoryImpl implements WeatherRepository
 {
 
     private WeatherApi weatherApi;
-    private WeatherByCoordinatesResponseConverter converter;
+    private WeatherByCoordinatesResponseConverter weatherConverter;
+    private ForecastByCoordinatesResponseConverter forecastConverter;
     private LocationProvider locationProvider;
 
     public WeatherRepositoryImpl(WeatherApi weatherApi,
-                                 WeatherByCoordinatesResponseConverter converter,
+                                 WeatherByCoordinatesResponseConverter weatherConverter,
+                                 ForecastByCoordinatesResponseConverter forecastConverter,
                                  LocationProvider locationProvider) {
         this.weatherApi = weatherApi;
-        this.converter = converter;
+        this.weatherConverter = weatherConverter;
+        this.forecastConverter = forecastConverter;
         this.locationProvider = locationProvider;
     }
 
@@ -33,12 +40,21 @@ public class WeatherRepositoryImpl implements WeatherRepository
     public Single<Weather> getLocalWeather() {
         return locationProvider.getLocation()
                 .flatMap(location ->
-                        weatherApi.getWeatherBycoordinates(location.getLatitude(), location.getLongitude())
+                        weatherApi.getWeatherByCoordinates(location.getLatitude(), location.getLongitude())
                                 .subscribeOn(Schedulers.io())
                 )
-                .map(converter);
+                .map(weatherConverter);
     }
 
+    @Override
+    public Single<List<Forecast>> getLocalForecast() {
+        return locationProvider.getLocation()
+                .flatMap(location ->
+                        weatherApi.getForecastBycoordinates(location.getLatitude(), location.getLongitude())
+                                .subscribeOn(Schedulers.io())
+                )
+                .map(forecastConverter);
+    }
 
     ///////////////////
 //    private GoogleApiClient client;

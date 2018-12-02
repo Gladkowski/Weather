@@ -4,6 +4,7 @@ import dagger.Module;
 import dagger.Provides;
 import dev.gladkowski.wetaherapp.domain.weather.WeatherInteractor;
 import dev.gladkowski.wetaherapp.presentation.weather.WeatherPresenter;
+import dev.gladkowski.wetaherapp.presentation.weather.converter.ForecastItemConverter;
 import dev.gladkowski.wetaherapp.presentation.weather.converter.WeatherViewModelConverter;
 import dev.gladkowski.wetaherapp.presentation.weather.provider.WeatherResourceProvider;
 import dev.gladkowski.wetaherapp.utils.rx.ErrorResourceProvider;
@@ -17,8 +18,9 @@ public interface WeatherPresenterModule {
                                                     ErrorResourceProvider errorResourceProvider,
                                                     WeatherInteractor weatherInteractor,
                                                     WeatherResourceProvider resourceProvider,
-                                                    WeatherViewModelConverter weatherConverter) {
+                                                    WeatherViewModelConverter weatherConverter,
+                                                    ForecastItemConverter forecastConverter) {
         return new WeatherPresenter(router, errorResourceProvider, weatherInteractor,
-                resourceProvider, weatherConverter);
+                resourceProvider, weatherConverter, forecastConverter);
     }
 }

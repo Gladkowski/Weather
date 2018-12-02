@@ -4,14 +4,9 @@ import android.support.annotation.NonNull;
 
 import com.arellomobile.mvp.InjectViewState;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import dev.gladkowski.wetaherapp.domain.weather.WeatherInteractor;
-import dev.gladkowski.wetaherapp.entity.weather.presentation.BaseForecastItem;
-import dev.gladkowski.wetaherapp.entity.weather.presentation.ForecastItem;
-import dev.gladkowski.wetaherapp.entity.weather.presentation.WeatherCondition;
 import dev.gladkowski.wetaherapp.presentation.common.activity.BaseNetworkPresenter;
+import dev.gladkowski.wetaherapp.presentation.weather.converter.ForecastItemConverter;
 import dev.gladkowski.wetaherapp.presentation.weather.converter.WeatherViewModelConverter;
 import dev.gladkowski.wetaherapp.presentation.weather.provider.WeatherResourceProvider;
 import dev.gladkowski.wetaherapp.utils.rx.ErrorResourceProvider;
@@ -34,17 +29,21 @@ public class WeatherPresenter extends BaseNetworkPresenter<WeatherView> {
     private WeatherResourceProvider resourceProvider;
     @NonNull
     private WeatherViewModelConverter weatherConverter;
+    @NonNull
+    private ForecastItemConverter forecastConverter;
 
     public WeatherPresenter(@NonNull Router router,
                             @NonNull ErrorResourceProvider errorResourceProvider,
                             @NonNull WeatherInteractor weatherInteractor,
                             @NonNull WeatherResourceProvider resourceProvider,
-                            @NonNull WeatherViewModelConverter weatherConverter) {
+                            @NonNull WeatherViewModelConverter weatherConverter,
+                            @NonNull ForecastItemConverter forecastConverter) {
         this.router = router;
         this.errorResourceProvider = errorResourceProvider;
         this.weatherInteractor = weatherInteractor;
         this.resourceProvider = resourceProvider;
         this.weatherConverter = weatherConverter;
+        this.forecastConverter = forecastConverter;
     }
 
     @NonNull
@@ -76,24 +75,24 @@ public class WeatherPresenter extends BaseNetworkPresenter<WeatherView> {
         Disposable subscription = weatherInteractor.getLocalWeather()
                 .map(weatherConverter)
                 .subscribe(weatherViewModel -> {
-                    List<BaseForecastItem> l = new ArrayList<>();
-                    l.add(new ForecastItem("+3|+5", WeatherCondition.CLEAR, "today"));
-                    l.add(new ForecastItem("+3|+5", WeatherCondition.CLEAR, "today"));
-                    l.add(new ForecastItem("+3|+5", WeatherCondition.CLEAR, "today"));
-                    l.add(new ForecastItem("+3|+5", WeatherCondition.CLEAR, "today"));
-                    l.add(new ForecastItem("+3|+5", WeatherCondition.CLEAR, "today"));
-                    l.add(new ForecastItem("+3|+5", WeatherCondition.CLEAR, "today"));
-                    l.add(new ForecastItem("+3|+5", WeatherCondition.CLEAR, "today"));
-                    l.add(new ForecastItem("+3|+5", WeatherCondition.CLEAR, "today"));
-                    l.add(new ForecastItem("+3|+5", WeatherCondition.CLEAR, "today"));
-
-                    getViewState().showList(l);
-
                     getViewState().showCurrentWeatherData(weatherViewModel);
+                    getForecast();
                     getViewState().onHideLoading();
                 }, exception -> {
                     processErrors(exception);
                     getViewState().onHideLoading();
+                });
+
+        unsubscribeOnDestroy(subscription);
+    }
+
+    private void getForecast() {
+        Disposable subscription = weatherInteractor.getLocalForecast()
+                .map(forecastConverter)
+                .subscribe(forecast -> {
+                    getViewState().showList(forecast);
+                }, exception -> {
+                    processErrors(exception);
                 });
 
         unsubscribeOnDestroy(subscription);

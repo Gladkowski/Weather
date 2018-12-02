@@ -28,6 +28,8 @@
     <string name="weather_sunset">Sunset</string>
     <string name="weather_visibility">Visibility</string>
     <string name="weather_unknown">Unknown</string>
+    <string name="weather_today">Today</string>
+    <string name="weather_tomorrow">Tomorrow</string>
 
     <!--Content description-->
     <string name="image_permission_needed">image_permission_needed</string>

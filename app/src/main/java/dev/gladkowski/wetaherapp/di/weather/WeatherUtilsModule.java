@@ -4,8 +4,12 @@ import android.content.Context;
 
 import dagger.Module;
 import dagger.Provides;
+import dev.gladkowski.wetaherapp.data.repository.weather.converter.ForecastByCoordinatesResponseConverter;
+import dev.gladkowski.wetaherapp.data.repository.weather.converter.ForecastByCoordinatesResponseConverterImpl;
 import dev.gladkowski.wetaherapp.data.repository.weather.converter.WeatherByCoordinatesResponseConverter;
 import dev.gladkowski.wetaherapp.data.repository.weather.converter.WeatherByCoordinatesResponseConverterImpl;
+import dev.gladkowski.wetaherapp.presentation.weather.converter.ForecastItemConverter;
+import dev.gladkowski.wetaherapp.presentation.weather.converter.ForecastItemConverterImpl;
 import dev.gladkowski.wetaherapp.presentation.weather.converter.WeatherImageConverter;
 import dev.gladkowski.wetaherapp.presentation.weather.converter.WeatherImageConverterImpl;
 import dev.gladkowski.wetaherapp.presentation.weather.converter.WeatherViewModelConverter;
@@ -24,6 +28,11 @@ public interface WeatherUtilsModule {
     }
 
     @Provides
+    static ForecastByCoordinatesResponseConverter provideForecastByCoordinatesResponseConverter() {
+        return new ForecastByCoordinatesResponseConverterImpl();
+    }
+
+    @Provides
     static LocationProvider provideLocationProvider(Context context) {
         return new LocationProviderImpl(context);
     }
@@ -36,6 +45,11 @@ public interface WeatherUtilsModule {
     @Provides
     static WeatherViewModelConverter provideWeatherViewModelConverter(WeatherResourceProvider resourceProvider) {
         return new WeatherViewModelConverterImpl(resourceProvider);
+    }
+
+    @Provides
+    static ForecastItemConverter provideForecastItemConverter(WeatherResourceProvider resourceProvider) {
+        return new ForecastItemConverterImpl(resourceProvider);
     }
 
     @Provides

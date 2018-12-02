@@ -64,4 +64,14 @@ public interface WeatherResourceProvider {
      * Provide unknown string
      */
     String getUnknown();
+
+    /**
+     * Provide today string
+     */
+    String getToday();
+
+    /**
+     * Provide tomorrow string
+     */
+    String getTomorrow();
 }
