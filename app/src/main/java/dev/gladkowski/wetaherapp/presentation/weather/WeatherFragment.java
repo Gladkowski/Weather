@@ -135,7 +135,7 @@ public class WeatherFragment extends BaseMapFragment<WeatherPresenter, WeatherVi
         forecastAdapter = new ForecastAdapter(imageConverter);
         recyclerView.setAdapter(forecastAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),
-                LinearLayoutManager.HORIZONTAL, false); //TODO: int to res
+                LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
