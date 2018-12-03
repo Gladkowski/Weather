@@ -1,15 +1,9 @@
 package dev.gladkowski.wetaherapp.di.app.module;
 
-import android.support.v4.app.FragmentManager;
-
-import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import dev.gladkowski.wetaherapp.di.base.modules.BaseActivityModule;
-import dev.gladkowski.wetaherapp.utils.navigation.main.MainNavigator;
-import dev.gladkowski.wetaherapp.utils.navigation.main.MainNavigatorImpl;
 import ru.terrakok.cicerone.Cicerone;
 import ru.terrakok.cicerone.NavigatorHolder;
 import ru.terrakok.cicerone.Router;
@@ -35,11 +29,4 @@ public interface NavigationModule {
         return Cicerone.create();
     }
 
-
-    @Provides
-    @Singleton
-    static MainNavigator provideMainNavigator(@Named(BaseActivityModule.ACTIVITY_FRAGMENT_MANAGER)
-                                                      FragmentManager fragmentManager) {
-        return new MainNavigatorImpl(fragmentManager);
-    }
 }
